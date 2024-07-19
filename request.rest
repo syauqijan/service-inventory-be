@@ -1,0 +1,27 @@
+GET http://localhost:8000/users
+
+###
+GET http://localhost:8000/users/1
+
+###
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "role": "Developer"
+}
+
+###
+PATCH http://localhost:8000/users/2
+Content-Type: application/json
+
+{
+    "name": "Phincon",
+    "email": "mphincon@phincon.com",
+    "role": "Project Manager"
+}
+
+###
+DELETE http://localhost:8000/users/1
