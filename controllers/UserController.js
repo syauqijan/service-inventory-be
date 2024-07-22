@@ -43,42 +43,44 @@ export const createUser = async(req, res) =>{
     }
 }
 
-export const login = async(req, res) =>{
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
     try {
-        const user = await User.findAll({
-            where:{
-                email: req.body.email
-            }
+        const user = await User.findOne({
+            where: { email }
         });
-        console.log("hai1");
 
-        if(user.length < 1){
-            return res.status(401).json({msg: "No User Found"});
+        if (!user) {
+            return res.status(401).json({ msg: 'No User Found' });
         }
-        console.log("hai2");
 
-        const validPassword = await bcrypt.compare(req.body.password, user[0].password);
-        if(!validPassword){
-            return res.status(401).json({msg: "Wrong Password"});
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(401).json({ msg: 'Wrong Password' });
         }
-        console.log("hai3");
-        console.log(user[0]);
-        const token = jwt.sign({
-            email: user[0].email,
-            userId: user[0].id,
-            name: user[0].name
-        }, process.env.JWT_KEY,{
-            expiresIn: "1h"
+
+        const token = jwt.sign(
+            {
+                email: user.email,
+                userId: user.id,
+                name: user.name
+            },
+            process.env.JWT_KEY,
+            { expiresIn: '1d' } 
+        );
+
+        const expiresIn = 86400; 
+
+        res.status(200).json({
+            msg: "Auth Successful",
+            token: token,
+            expiresIn: expiresIn
         });
-        // console.log("hai4");
-        res.status(200).json({msg: "Auth Successful", token: token});
+    } catch (error) {
+        res.status(401).json({ msg: "Auth Failed" });
     }
-    catch (error) {
-        res.status(401).json({msg: "Auth Failed"});
-
-
-    }
-}
+};
 
 export const updateUser = async(req, res) =>{
     try {
