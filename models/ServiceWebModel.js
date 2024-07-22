@@ -3,21 +3,24 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define('user', {
+const ServiceWeb = db.define('service_web', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  roleId: DataTypes.INTEGER,
+  gitlabUrl: DataTypes.STRING,
+  description: DataTypes.STRING,
+  preprodUrl: DataTypes.STRING,
+  preprodUrlStatus: DataTypes.STRING,
+  prodUrl: DataTypes.STRING,
+  prodUrlStatus: DataTypes.STRING,
+  userId: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
   freezeTableName: true
 });
 
-export default User;
-
+export default ServiceWeb;

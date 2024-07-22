@@ -3,21 +3,19 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define('user', {
+const UnitTesting = db.define('unit_testing', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  roleId: DataTypes.INTEGER,
+  coverage: DataTypes.INTEGER,
+  testCasePassed: DataTypes.INTEGER,
+  testCaseFailed: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
   freezeTableName: true
 });
 
-export default User;
-
+export default UnitTesting;

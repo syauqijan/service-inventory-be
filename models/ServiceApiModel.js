@@ -3,21 +3,23 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define('user', {
+const ServiceApi = db.define('service_api', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  roleId: DataTypes.INTEGER,
+  gitlabUrl: DataTypes.STRING,
+  description: DataTypes.STRING,
+  yamlSpec: DataTypes.STRING,
+  serviceApiDetailId: DataTypes.INTEGER,
+  sonarCubeId: DataTypes.INTEGER,
+  unitTestingId: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
   freezeTableName: true
 });
 
-export default User;
-
+export default ServiceApi;

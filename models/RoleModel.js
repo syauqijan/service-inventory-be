@@ -3,21 +3,17 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define('user', {
+const Role = db.define('role', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  roleId: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
   freezeTableName: true
 });
 
-export default User;
-
+export default Role;

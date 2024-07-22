@@ -3,21 +3,22 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define('user', {
+const SonarQube = db.define('sonarqube', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  roleId: DataTypes.INTEGER,
+  qualityGateStatus: DataTypes.STRING,
+  bugs: DataTypes.INTEGER,
+  vulnerabilities: DataTypes.INTEGER,
+  codesmell: DataTypes.INTEGER,
+  coverage: DataTypes.INTEGER,
+  duplication: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
   freezeTableName: true
 });
 
-export default User;
-
+export default SonarQube;
