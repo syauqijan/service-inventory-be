@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import UserRoute from "./routes/UserRoute.js";
+import userRoute from "./routes/UserRoute.js";
+import roleRoute from "./routes/RoleRoute.js";
 import dotenv from "dotenv";
 import db from './config/database.js';
 import './models/index.js';  
@@ -9,7 +10,8 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(UserRoute);
+app.use(userRoute);
+app.use(roleRoute);
 
 const PORT = process.env.PORT || 8000;
 

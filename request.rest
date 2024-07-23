@@ -8,10 +8,10 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "Syauqi",
-    "email": "syauqi@phincon.com",
+    "name": "Syauqi3",
+    "email": "syauqi3@phincon.com",
     "password": "11111111",
-    "roleId": "1"
+    "roleId": "3"
 }
 
 ###
