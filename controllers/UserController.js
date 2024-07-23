@@ -1,13 +1,21 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Role from "../models/RoleModel.js";
 
 export const getUsers = async(req, res) =>{
     try {
-        const response = await User.findAll();
-        res.status(200).json(response);
+        const users = await User.findAll({
+            include: [{
+                model: Role,
+                as: 'role',
+                attributes: ['name']
+            }]
+        });
+        res.status(200).json(users);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({message: "Server Error"});
     }
 }
 
@@ -24,7 +32,7 @@ export const getUserById = async(req, res) =>{
     }
 }
 export const createUser = async(req, res) =>{
-    const {name, email, password, role, last_login} = req.body;
+    const {name, email, password, roleId} = req.body;
     const salt = await bcrypt.genSalt();  
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -34,8 +42,7 @@ export const createUser = async(req, res) =>{
             name: name,
             email: email,
             password: hashedPassword,
-            role: role,
-            last_login: last_login
+            roleId: roleId,
         });
         res.status(201).json({msg: "User Created"});
     } catch (error) {
