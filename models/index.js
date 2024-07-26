@@ -32,10 +32,10 @@ ServiceApi.belongsTo(UnitTesting, { foreignKey: 'unitTestingId' });
 UnitTesting.hasMany(ServiceApi, { foreignKey: 'unitTestingId' });
 
 
-// (async () => {
-//   await db.sync({ alter: true });
-//   console.log("Database & tables synchronized!");
-// })();
+(async () => {
+  await db.sync({ alter: true });
+  console.log("Database & tables synchronized!");
+})();
 
   
   export {

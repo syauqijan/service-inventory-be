@@ -15,13 +15,14 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8000/users/2
+PATCH http://localhost:8000/users/4
 Content-Type: application/json
 
 {
-    "name": "Phincon",
-    "email": "mphincon@phincon.com",
-    "role": "Project Manager"
+    "name": "testing3",
+    "email": "testing3@phincon.com",
+    "password": "22222222",
+    "roleId": "3"
 }
 
 ###

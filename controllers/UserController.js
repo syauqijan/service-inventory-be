@@ -1,23 +1,43 @@
 import User from "../models/UserModel.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import Role from "../models/RoleModel.js";
+import { Op } from "sequelize";
 
-export const getUsers = async(req, res) =>{
-    try {
-        const users = await User.findAll({
-            include: [{
-                model: Role,
-                as: 'role',
-                attributes: ['name']
-            }]
-        });
-        res.status(200).json(users);
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({message: "Server Error"});
-    }
-}
+export const getUsers = async (req, res) => {
+  const { search, page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+
+  try {
+    const whereCondition = search
+      ? {
+          [Op.or]: [
+            { name: { [Op.like]: `%${search}%` } },
+            { email: { [Op.like]: `%${search}%` } },
+            { "$role.name$": { [Op.like]: `%${search}%` } },
+          ],
+        }
+      : {};
+
+    const { count, rows: users } = await User.findAndCountAll({
+      where: whereCondition,
+      include: [
+        {
+          model: Role,
+          as: "role",
+          attributes: ["name"],
+        },
+      ],
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+    });
+
+    res.status(200).json({ users, total: count });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
 
 export const getUserById = async(req, res) =>{
     try {
