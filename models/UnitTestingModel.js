@@ -9,7 +9,10 @@ const UnitTesting = db.define('unit_testing', {
     primaryKey: true,
     autoIncrement: true
   },
-  coverage: DataTypes.INTEGER,
+  coverageStatement: DataTypes.INTEGER,
+  coverageBranch: DataTypes.INTEGER,
+  coverageFunction: DataTypes.INTEGER,
+  coverageLines: DataTypes.INTEGER,
   testCasePassed: DataTypes.INTEGER,
   testCaseFailed: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,

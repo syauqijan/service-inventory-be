@@ -11,7 +11,7 @@ const Api = db.define('api', {
   },
   endpoint: DataTypes.STRING,
   description: DataTypes.STRING,
-  method: DataTypes.INTEGER,
+  method: DataTypes.STRING,
   status: DataTypes.STRING,
   version: DataTypes.STRING,
   platform: DataTypes.STRING,
