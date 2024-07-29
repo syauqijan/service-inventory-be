@@ -1,5 +1,7 @@
 import User from "../models/UserModel.js";
 import Role from "../models/RoleModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 
 export const getUsers = async (req, res) => {
@@ -109,19 +111,31 @@ export const login = async (req, res) => {
     }
 };
 
-export const updateUser = async(req, res) =>{
+export const updateUser = async (req, res) => {
     try {
-        await User.update(req.body,{
-            where:{
-                id: req.params.id
+        const userId = req.params.id;
+        const { name, email, password, roleId } = req.body;
+
+        const updateData = { name, email, roleId };
+
+        if (password) {
+            const salt = await bcrypt.genSalt();
+            const hashedPassword = await bcrypt.hash(password, salt);
+            updateData.password = hashedPassword;
+        }
+
+        await User.update(updateData, {
+            where: {
+                id: userId
             }
         });
-        res.status(200).json({msg: "User Updated"});
+
+        res.status(200).json({ msg: 'User Updated' });
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ msg: 'Server Error' });
     }
-}
-
+};
 export const deleteUser = async(req, res) =>{
     try {
         await User.destroy({
