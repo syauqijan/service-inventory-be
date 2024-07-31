@@ -8,21 +8,20 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "Syauqi3",
-    "email": "syauqi3@phincon.com",
-    "password": "11111111",
-    "roleId": "3"
+    "name": "cast",
+    "email": "cast@phincon.com",
+    "password": "12341234",
+    "roleId": "2"
 }
 
 ###
-PATCH http://localhost:8000/users/4
+PATCH http://localhost:8000/users/2
 Content-Type: application/json
 
 {
-    "name": "testing3",
-    "email": "testing3@phincon.com",
-    "password": "22222222",
-    "roleId": "3"
+    "name": "Phincon",
+    "email": "mphincon@phincon.com",
+    "role": "Project Manager"
 }
 
 ###
@@ -36,4 +35,44 @@ Content-Type: application/json
 {
     "email": "syauqi@gmail.com",
     "password": "12345"
+}
+
+###
+POST http://localhost:8000/services
+Content-Type: application/json
+
+{
+    "name": "name5",
+    "gitlabUrl": "gitlabUrl5",
+    "description": "description5",
+    "preprodUrl": "preprodUrl5",
+    "preprodUrlStatus": "preprodUrlStatus5",
+    "prodUrl": "prodUrl5",
+    "prodUrlStatus": "prodUrlStatus5",
+    "userId": "1"
+}
+
+###
+DELETE http://localhost:8000/services/4
+
+###
+GET http://localhost:8000/services
+
+###
+GET http://localhost:8000/services/2
+
+
+###
+PATCH http://localhost:8000/Services/3
+Content-Type: application/json
+
+{
+    "name": "name5",
+    "gitlabUrl": "gitlabUrl3edit",
+    "description": "description3edit",
+    "preprodUrl": "preprodUrl3edit",
+    "preprodUrlStatus": "preprodUrlStatus3edit",
+    "prodUrl": "prodUrl3edit",
+    "prodUrlStatus": "prodUrlStatus3edit",
+    "userId": "2"
 }
