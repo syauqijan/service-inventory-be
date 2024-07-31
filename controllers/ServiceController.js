@@ -1,4 +1,5 @@
 import ServiceWeb from "../models/ServiceWebModel.js";
+import { Op } from "sequelize";
 
 // SELECT * FROM SERVICEWEB TABLE AND THEIR SEARCH
 export const getService = async (req, res) => {

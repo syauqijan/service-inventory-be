@@ -76,3 +76,8 @@ Content-Type: application/json
     "prodUrlStatus": "prodUrlStatus3edit",
     "userId": "2"
 }
+
+
+// Testing Search SERVICE WEB
+###
+http://localhost:8000/services?search=name2&page=1&limit=10
