@@ -1,17 +1,31 @@
 import ServiceWeb from "../models/ServiceWebModel.js";
 
-// SELECT * FROM SERVICEWEB TABLE
-export const getService = async(req, res) =>{
+// SELECT * FROM SERVICEWEB TABLE AND THEIR SEARCH
+export const getService = async (req, res) => {
+    const { search, page = 1, limit = 10 } = req.query;
+    const offset = (page - 1) * limit;
+  
     try {
-        const ServiceWebs = await ServiceWeb.findAll({
-
-        });
-        res.status(200).json(ServiceWebs);
+      const whereCondition = search
+        ? {
+            [Op.or]: [
+              { name: { [Op.like]: `%${search}%` } },
+            ],
+          }
+        : {};
+  
+      const { count, rows: services } = await ServiceWeb.findAndCountAll({
+        where: whereCondition,
+        limit: parseInt(limit),
+        offset: parseInt(offset),
+      });
+  
+      res.status(200).json({ services, total: count });
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({message: "Server Error"});
+      console.log(error.message);
+      res.status(500).json({ message: "Server Error" });
     }
-}
+  };
 
 // CREATING NEW SERVICE WEB 
 export const createService = async(req, res) =>{
