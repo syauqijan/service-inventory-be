@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/services', createService);
 
 //Delete Service Via ID
-router.delete('/services/:id', deleteService);
+router.delete('/services', deleteService);
 
 //Update Service Via ID
 router.patch('/services/:id', updateService);
