@@ -1,4 +1,5 @@
 import ServiceWeb from "../models/ServiceWebModel.js";
+import User from "../models/UserModel.js";
 import { Op } from "sequelize";
 
 
@@ -65,18 +66,28 @@ export const createService = async (req, res) => {
     }
 };
 
-export const getServiceById = async(req, res) =>{
+export const getServiceById = async(req, res) => {
     try {
         const response = await ServiceWeb.findOne({
-            where:{
+            where: {
                 id: req.params.id
-            }
+            },
+            include: [{
+                model: User,
+                attributes: ['name']
+            }]
         });
+        
+        if (!response) {
+            return res.status(404).json({ message: 'Service not found' });
+        }
+
         res.status(200).json(response);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
 
 export const deleteService = async (req, res) => {
     try {
