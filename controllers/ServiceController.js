@@ -1,54 +1,70 @@
 import ServiceWeb from "../models/ServiceWebModel.js";
 import { Op } from "sequelize";
 
-// SELECT * FROM SERVICEWEB TABLE AND THEIR SEARCH
+
 export const getService = async (req, res) => {
     const { search, page = 1, limit = 10 } = req.query;
     const offset = (page - 1) * limit;
-  
+
     try {
-      const whereCondition = search
+    const whereCondition = search
         ? {
             [Op.or]: [
-              { name: { [Op.like]: `%${search}%` } },
+            { name: { [Op.like]: `%${search}%` } },
             ],
-          }
+        }
         : {};
-  
-      const { count, rows: services } = await ServiceWeb.findAndCountAll({
+
+    const { count, rows: services } = await ServiceWeb.findAndCountAll({
         where: whereCondition,
         limit: parseInt(limit),
         offset: parseInt(offset),
-      });
-  
-      res.status(200).json({ services, total: count });
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).json({ message: "Server Error" });
-    }
-  };
+    });
 
-// CREATING NEW SERVICE WEB 
-export const createService = async(req, res) =>{
-    const {name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId} = req.body;
+    res.status(200).json({ services, total: count });
+    } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "Server Error" });
+    }
+};
+
+
+export const createService = async (req, res) => {
     try {
-        await ServiceWeb.create({
-            name: name,
-            gitlabUrl: gitlabUrl,
-            description: description,
-            preprodUrl: preprodUrl,
-            preprodUrlStatus: preprodUrlStatus,
-            prodUrl: prodUrl,
-            prodUrlStatus: prodUrlStatus,
-            userId: userId,
+        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId } = req.body;
+
+        const existingService = await ServiceWeb.findOne({
+            where: {
+                [Op.or]: [
+                    { name },
+                    { gitlabUrl },
+                    { preprodUrl },
+                    { prodUrl }
+                ]
+            }
         });
-        res.status(201).json({msg: "Service Created"});
+
+        if (existingService) {
+            let errors = {};
+            if (existingService.name === name) errors.name = 'Service name must not be duplicated';
+            if (existingService.gitlabUrl === gitlabUrl) errors.gitlabUrl = 'Gitlab URL must not be duplicated';
+            if (existingService.preprodUrl === preprodUrl) errors.preprodUrl = 'Pre-Prod URL must not be duplicated';
+            if (existingService.prodUrl === prodUrl) errors.prodUrl = 'Prod URL must not be duplicated';
+
+            return res.status(400).json({ errors });
+        }
+
+        const newService = await ServiceWeb.create({
+            name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId
+        });
+
+        res.status(201).json(newService);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ message: "Failed to create service" });
     }
-}
+};
 
-// Select Service Web via their ID
 export const getServiceById = async(req, res) =>{
     try {
         const response = await ServiceWeb.findOne({
@@ -62,7 +78,6 @@ export const getServiceById = async(req, res) =>{
     }
 }
 
-//Delete Service Data Via ID
 export const deleteService = async (req, res) => {
     try {
         const ids = req.body.ids;
@@ -85,7 +100,6 @@ export const deleteService = async (req, res) => {
     }
 };
 
-//Update Service WEB Via ID
 export const updateService = async(req, res) =>{
     try {
         await ServiceWeb.update(req.body,{
