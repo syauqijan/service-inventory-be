@@ -41,10 +41,7 @@ export const createService = async (req, res) => {
         const existingService = await ServiceWeb.findOne({
             where: {
                 [Op.or]: [
-                    { name },
-                    { gitlabUrl },
-                    { preprodUrl },
-                    { prodUrl }
+                    { name }
                 ]
             }
         });
@@ -52,9 +49,6 @@ export const createService = async (req, res) => {
         if (existingService) {
             let errors = {};
             if (existingService.name === name) errors.name = 'Service name must not be duplicated';
-            if (existingService.gitlabUrl === gitlabUrl) errors.gitlabUrl = 'Gitlab URL must not be duplicated';
-            if (existingService.preprodUrl === preprodUrl) errors.preprodUrl = 'Pre-Prod URL must not be duplicated';
-            if (existingService.prodUrl === prodUrl) errors.prodUrl = 'Prod URL must not be duplicated';
 
             return res.status(400).json({ errors });
         }
@@ -122,10 +116,7 @@ export const updateService = async (req, res) => {
         const existingService = await ServiceWeb.findOne({
             where: {
                 [Op.or]: [
-                    { name },
-                    { gitlabUrl },
-                    { preprodUrl },
-                    { prodUrl }
+                    { name }
                 ],
                 id: { [Op.ne]: id }  
             }
@@ -134,9 +125,6 @@ export const updateService = async (req, res) => {
         if (existingService) {
             let errors = {};
             if (existingService.name === name) errors.name = 'Service name must not be duplicated';
-            if (existingService.gitlabUrl === gitlabUrl) errors.gitlabUrl = 'Gitlab URL must not be duplicated';
-            if (existingService.preprodUrl === preprodUrl) errors.preprodUrl = 'Pre-Prod URL must not be duplicated';
-            if (existingService.prodUrl === prodUrl) errors.prodUrl = 'Prod URL must not be duplicated';
 
             return res.status(400).json({ errors });
         }
