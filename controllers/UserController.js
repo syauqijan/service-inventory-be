@@ -93,13 +93,15 @@ export const login = async (req, res) => {
             {
                 email: user.email,
                 userId: user.id,
-                name: user.name
+                name: user.name,
             },
             process.env.JWT_KEY,
             { expiresIn: '1d' } 
         );
 
         const expiresIn = 86400; 
+
+        res.cookie('authToken', token, { maxAge: expiresIn * 1000, httpOnly: true, secure: process.env.NODE_ENV !== 'development' });
 
         res.status(200).json({
             msg: "Auth Successful",

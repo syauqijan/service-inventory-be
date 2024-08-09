@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post('/services', createService);
 
-router.delete('/services', deleteService);
+router.delete('/services/:id', deleteService);
 
 router.patch('/services/:id', updateService);
 

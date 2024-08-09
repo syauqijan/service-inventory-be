@@ -95,25 +95,24 @@ export const getServiceById = async (req, res) => {
 
 export const deleteService = async (req, res) => {
     try {
-        const ids = req.body.ids;
-        if (!Array.isArray(ids) || !ids.length) {
-            return res.status(400).json({ message: "No IDs provided or invalid format" });
+        const serviceId = req.params.id;
+        if (!serviceId) {
+            return res.status(400).json({ msg: "Service ID is required" });
         }
 
         await ServiceWeb.destroy({
             where: {
-                id: {
-                    [Op.in]: ids
-                }
+                id: serviceId
             }
         });
 
-        res.status(200).json({ message: "Services Deleted" });
+        res.status(200).json({ msg: "Service Deleted" });
     } catch (error) {
-        console.error('Error deleting services:', error.message);
-        res.status(500).json({ message: "Failed to delete services" });
+        console.error('Error deleting service:', error.message);
+        res.status(500).json({ msg: "Failed to delete service" });
     }
 };
+
 
 export const updateService = async (req, res) => {
     try {
