@@ -12,7 +12,9 @@ const ServiceApi = db.define('service_api', {
   name: DataTypes.STRING,
   gitlabUrl: DataTypes.STRING,
   description: DataTypes.STRING,
-  yamlSpec: DataTypes.STRING,
+  yamlSpec: {
+    type: DataTypes.TEXT('long'),
+  },
   serviceApiDetailId: DataTypes.INTEGER,
   sonarCubeId: DataTypes.INTEGER,
   unitTestingId: DataTypes.INTEGER,
