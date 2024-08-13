@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/users/1
+DELETE http://localhost:8000/servicesapi/5
 
 
 ###
@@ -81,3 +81,15 @@ Content-Type: application/json
 // Testing Search SERVICE WEB
 ###
 http://localhost:8000/services?search=name2&page=1&limit=10
+
+
+// Testing Search SERVICE API
+###
+http://localhost:8000/servicesapi
+
+
+
+
+// Testing Search Service API via id
+###
+http://localhost:8000/servicesapi/3
