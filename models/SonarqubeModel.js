@@ -10,11 +10,11 @@ const SonarQube = db.define('sonarqube', {
     autoIncrement: true
   },
   qualityGateStatus: DataTypes.STRING,
-  bugs: DataTypes.INTEGER,
-  vulnerabilities: DataTypes.INTEGER,
-  codesmell: DataTypes.INTEGER,
-  coverage: DataTypes.INTEGER,
-  duplication: DataTypes.INTEGER,
+  bugs: DataTypes.STRING,
+  vulnerabilities: DataTypes.STRING,
+  codesmell: DataTypes.STRING,
+  coverage: DataTypes.STRING,
+  duplication: DataTypes.STRING,
   updatedAt: DataTypes.DATE,
   createdAt: DataTypes.DATE
 }, {
