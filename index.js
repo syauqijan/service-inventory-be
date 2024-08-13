@@ -4,6 +4,11 @@ import userRoute from "./routes/UserRoute.js";
 import serviceRoute from "./routes/ServiceRoute.js";
 import roleRoute from "./routes/RoleRoute.js";
 import dotenv from "dotenv";
+import ApiRoute from "./routes/APIRoute.js";
+import UnitTestingRoute from "./routes/UnitTestingRoute.js";
+import SonarQubeRoute from "./routes/SonarcubeRoute.js";
+import ServiceApiRoute from "./routes/ServiceApiRoute.js";
+import ServiceApiDetailRoute from "./routes/ServiceApiDetailRoute.js";
 import db from './config/database.js';
 import './models/index.js';  
 dotenv.config();
@@ -14,6 +19,11 @@ app.use(express.json());
 app.use(userRoute);
 app.use(roleRoute);
 app.use(serviceRoute);
+app.use(ApiRoute);
+app.use(UnitTestingRoute);
+app.use(SonarQubeRoute);
+app.use(ServiceApiRoute);
+app.use(ServiceApiDetailRoute);
 
 const PORT = process.env.PORT || 8000;
 
