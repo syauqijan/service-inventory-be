@@ -9,6 +9,7 @@ const ServiceApi = db.define('service_api', {
     primaryKey: true,
     autoIncrement: true
   },
+  name: DataTypes.STRING,
   ownerId: {
     type: DataTypes.INTEGER,
     defaultValue: 1,
