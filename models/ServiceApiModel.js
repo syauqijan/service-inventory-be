@@ -9,7 +9,10 @@ const ServiceApi = db.define('service_api', {
     primaryKey: true,
     autoIncrement: true
   },
-  name: DataTypes.STRING,
+  ownerId: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+  },
   gitlabUrl: DataTypes.STRING,
   description: DataTypes.STRING,
   yamlSpec: {
