@@ -6,21 +6,14 @@ import ServiceApi from './ServiceApiModel.js';
 import Api from './ApiModel.js';
 import SonarQube from './SonarqubeModel.js';
 import UnitTesting from './UnitTestingModel.js';
-import ServiceApiDetail from './ServiceApiDetailModel.js';
 import ServiceWeb from './ServiceWebModel.js';
 
 // Associations
 User.belongsTo(Role, { foreignKey: 'roleId' });
 Role.hasMany(User, { foreignKey: 'roleId' });
 
-User.hasMany(ServiceApiDetail, { foreignKey: 'userId' });
-ServiceApiDetail.belongsTo(User, { foreignKey: 'userId' });
-
-ServiceApiDetail.belongsTo(ServiceApi, { foreignKey: 'serviceId' });
-ServiceApi.hasMany(ServiceApiDetail, { foreignKey: 'serviceId' });
-
-ServiceApiDetail.belongsTo(Api, { foreignKey: 'apiId' });
-Api.hasMany(ServiceApiDetail, { foreignKey: 'apiId' });
+Api.belongsTo(ServiceApi, { foreignKey: 'service_api_id' });
+ServiceApi.hasMany(Api, { foreignKey: 'service_api_id' });
 
 User.hasMany(ServiceWeb, { foreignKey: 'userId' });
 ServiceWeb.belongsTo(User, { foreignKey: 'userId' });
@@ -45,6 +38,5 @@ UnitTesting.hasMany(ServiceApi, { foreignKey: 'unitTestingId' });
     Api,
     SonarQube,
     UnitTesting,
-    ServiceApiDetail,
     ServiceWeb
   };

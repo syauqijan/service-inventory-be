@@ -9,6 +9,7 @@ const Api = db.define('api', {
     primaryKey: true,
     autoIncrement: true
   },
+  service_api_id: DataTypes.INTEGER,
   endpoint: DataTypes.STRING,
   description: DataTypes.STRING,
   method: DataTypes.STRING,

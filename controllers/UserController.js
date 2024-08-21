@@ -5,10 +5,18 @@ import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 
 export const getUsers = async (req, res) => {
-  const { search, page = 1, limit = 10 } = req.query;
-  const offset = (page - 1) * limit;
-
   try {
+    let { search, page = 1, limit = 10 } = req.query;
+
+    // Pastikan 'page' dan 'limit' adalah angka valid
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(limit) || limit < 1) limit = 10;
+
+    const offset = (page - 1) * limit;
+
     const whereCondition = search
       ? {
           [Op.or]: [
@@ -28,9 +36,13 @@ export const getUsers = async (req, res) => {
           attributes: ["name"],
         },
       ],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit,
+      offset,
     });
+
+    // Logging untuk memeriksa hasil query
+    console.log('Users found:', users.length);
+    console.log('Total count:', count);
 
     res.status(200).json({ users, total: count });
   } catch (error) {
@@ -38,6 +50,7 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 
 

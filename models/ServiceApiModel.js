@@ -12,8 +12,9 @@ const ServiceApi = db.define('service_api', {
   name: DataTypes.STRING,
   gitlabUrl: DataTypes.STRING,
   description: DataTypes.STRING,
-  yamlSpec: DataTypes.STRING,
-  serviceApiDetailId: DataTypes.INTEGER,
+  yamlSpec: {
+    type: DataTypes.TEXT('long'), // Mengubah ke tipe LONGTEXT
+  },
   sonarCubeId: DataTypes.INTEGER,
   unitTestingId: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
