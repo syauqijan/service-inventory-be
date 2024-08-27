@@ -4,13 +4,17 @@ import {
     createAPI,
     getApiById,
     deleteAPI,
-    updateAPI
-} from "../controllers/APIController.js";
+    updateAPI,
+    createAPInew
+} from "../controllers/ApiController.js";
 
 const router = express.Router();
 
 //Creating Api
-router.post('/api', createAPI);
+router.post('/api', createAPInew);
+
+//Creating Api
+router.post('/api/:serviceApiId', createAPI);
 
 //Api Get All Detail
 router.get('/api', getAPI);

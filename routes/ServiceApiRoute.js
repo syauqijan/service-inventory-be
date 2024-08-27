@@ -3,7 +3,8 @@ import {
     createService,
     getService,
     deleteService,
-    getServiceById
+    getServiceById,
+    updateService
 } from "../controllers/ServiceApiController.js";
 
 const router = express.Router();
@@ -15,5 +16,7 @@ router.get('/servicesapi', getService);
 router.get('/servicesapi/:id', getServiceById);
 
 router.delete('/servicesapi/:id', deleteService);
+
+router.patch('/servicesapi/:id', updateService);
 
 export default router;

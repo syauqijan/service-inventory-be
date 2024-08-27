@@ -92,6 +92,10 @@ http://localhost:8000/servicesapi
 http://localhost:8000/api
 
 
+// Testing GET Unit Testing
+###
+http://localhost:8000/unitTesting/1
+
 // Testing Search Service API via id
 ###
 http://localhost:8000/servicesapi/103
@@ -148,4 +152,19 @@ Content-Type: application/json
     "serviceApiDetailId": "1",
     "sonarCubeId": 1,
     "unitTestingId": 1
+}
+
+
+###
+POST http://localhost:8000/api
+Content-Type: application/json
+
+{
+    "service_api_id": 2,
+    "endpoint": "TEst",
+    "description": "1",
+    "method": "1",
+    "status": "1",
+    "version": "1.1.1",
+    "platform": "Web"
 }

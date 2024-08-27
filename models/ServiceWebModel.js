@@ -9,6 +9,10 @@ const ServiceWeb = db.define('service_web', {
     primaryKey: true,
     autoIncrement: true
   },
+  versionService: {
+    type: DataTypes.STRING,
+    defaultValue: "1.0.0.0",
+  },
   name: DataTypes.STRING,
   gitlabUrl: DataTypes.STRING,
   description: DataTypes.STRING,

@@ -36,7 +36,7 @@ export const getService = async (req, res) => {
 
 export const createService = async (req, res) => {
     try {
-        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId } = req.body;
+        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService } = req.body;
 
         const existingService = await ServiceWeb.findOne({
             where: {
@@ -54,7 +54,7 @@ export const createService = async (req, res) => {
         }
 
         const newService = await ServiceWeb.create({
-            name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId
+            name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService
         });
 
         res.status(201).json(newService);
@@ -111,7 +111,7 @@ export const deleteService = async (req, res) => {
 export const updateService = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId } = req.body;
+        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService } = req.body;
 
         const existingService = await ServiceWeb.findOne({
             where: {
@@ -130,7 +130,7 @@ export const updateService = async (req, res) => {
         }
 
         await ServiceWeb.update(
-            { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId },
+            { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService },
             { where: { id } }
         );
 

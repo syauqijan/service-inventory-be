@@ -51,9 +51,6 @@ export const getUsers = async (req, res) => {
   }
 };
 
-
-
-
 export const getUserById = async(req, res) =>{
     try {
         const response = await User.findOne({

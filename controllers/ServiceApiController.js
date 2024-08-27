@@ -6,7 +6,7 @@ import { Op } from "sequelize";
 
 // CREATING NEW SERVICE API 
 export const createService = async(req, res) =>{
-    const {name, gitlabUrl, description, yamlSpec, serviceApiDetailId, sonarCubeId, unitTestingId} = req.body;
+    const {name, gitlabUrl, description, yamlSpec, serviceApiDetailId, sonarCubeId, unitTestingId, versionService} = req.body;
     try {
         // Buat entitas ServiceApi di database
         const newServiceApi = await ServiceApiModel.create({
@@ -16,7 +16,8 @@ export const createService = async(req, res) =>{
             yamlSpec: yamlSpec,
             serviceApiDetailId: serviceApiDetailId,
             sonarCubeId: sonarCubeId,
-            unitTestingId: unitTestingId
+            unitTestingId: unitTestingId,
+            versionService: versionService
         });
 
         // Kembalikan ID dari entitas yang baru saja dibuat
@@ -102,7 +103,7 @@ export const getServiceById = async (req, res) => {
                 {
                     model: UnitTesting,
                     attributes: ['id', 'testCasePassed', 'testCaseFailed', 'coverageStatement', 
-                    'CoverageBranch', 'coverageFunction', 'CoverageLines']
+                    'coverageBranch', 'coverageFunction', 'coverageLines']
                 },
                 {
                     model: User,
@@ -121,3 +122,17 @@ export const getServiceById = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+//Update API Via ID
+export const updateService = async(req, res) =>{
+    try {
+        await ServiceApiModel.update(req.body,{
+            where:{
+                id: req.params.id
+            }
+        });
+        res.status(200).json({msg: "Sonar Qube Updated"});
+    } catch (error) {
+        console.log(error.message);
+    }
+}

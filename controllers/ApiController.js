@@ -23,23 +23,50 @@ export const getAPI = async (req, res) => {
     }
   };
 
-// CREATING NEW SERVICE WEB 
-export const createAPI = async(req, res) =>{
-    const {service_api_id, endpoint, description, method, status, version, platform} = req.body;
-    try {
-        await ApiModel.create({
-            service_api_id: service_api_id,
-            endpoint: endpoint,
-            description: description,
-            method: method,
-            status: status,
-            version: version,
-            platform: platform,
-        });
-        res.status(201).json({msg: "API Created"});
-    } catch (error) {
-        console.log(error.message);
-    }
+// CREATING API 
+export const createAPI = async(req, res) => {
+  const { endpoint, description, method, status, version, platform } = req.body;
+  const serviceApiId = req.params.serviceApiId || req.query.serviceApiId; // Mengambil serviceApiId dari URL
+  try {
+      await ApiModel.create({
+          service_api_id: serviceApiId, // Menggunakan serviceApiId dari URL
+          endpoint: endpoint,
+          description: description,
+          method: method,
+          status: status,
+          version: version,
+          platform: platform,
+      });
+      res.status(201).json({ msg: "API Created" });
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ msg: "Server Error" });
+  }
+}
+
+// CREATING API 
+export const createAPInew = async (req, res) => {
+  const {endpoint, description, method, status, version, platform, service_api_id} = req.body;
+  try {
+      // Buat entitas Sonarqube di database
+      await ApiModel.create({
+        service_api_id: service_api_id,
+        endpoint: endpoint,
+        description: description,
+        method: method,
+        status: status,
+        version: version,
+        platform: platform,
+    });
+
+      // Mengembalikan ID dari entitas yang baru saja dibuat beserta pesan sukses
+      res.status(201).json({
+          msg: "API Created"
+      });
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).json({error: error.message});
+  }
 }
 
 // GET API VIA ID

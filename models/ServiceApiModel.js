@@ -14,6 +14,10 @@ const ServiceApi = db.define('service_api', {
     type: DataTypes.INTEGER,
     defaultValue: 1,
   },
+  versionService: {
+    type: DataTypes.STRING,
+    defaultValue: "1.0.0.0",
+  },
   gitlabUrl: DataTypes.STRING,
   description: DataTypes.STRING,
   yamlSpec: {
