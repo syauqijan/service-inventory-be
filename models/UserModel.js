@@ -14,7 +14,11 @@ const User = db.define('user', {
   password: DataTypes.STRING,
   roleId: DataTypes.INTEGER,
   updatedAt: DataTypes.DATE,
-  createdAt: DataTypes.DATE
+  createdAt: DataTypes.DATE,
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: "enable",
+  },
 }, {
   freezeTableName: true
 });

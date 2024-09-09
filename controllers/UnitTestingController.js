@@ -66,3 +66,14 @@ export const updateUnitTesting = async(req, res) =>{
         console.log(error.message);
     }
 }
+
+export const getUnitTesting = async (req, res) => {
+    try {
+        const { count, rows: unitTesting } = await UnitTestingModel.findAndCountAll({});
+
+        res.status(200).json({ unitTesting, total: count });
+    } catch (error) {
+        console.error('Error fetching services:', error.message);
+        res.status(500).json({ message: "Server Error" });
+    }
+};

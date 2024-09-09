@@ -3,21 +3,21 @@ import {
     createSonarqube,
     getSonarqubeById,
     deleteSonarqube,
-    updateSonarqube
+    updateSonarqube,
 } from "../controllers/sonarqubeController.js";
 
 const router = express.Router();
 
-//Creating Api
+//Creating Sonarqube
 router.post('/Sonarqube', createSonarqube);
 
-//Get API via ID
+//Get Sonarqube via ID
 router.get('/Sonarqube/:id', getSonarqubeById);
 
-//Delete API via ID
+//Delete Sonarqube via ID
 router.delete('/Sonarqube/:id', deleteSonarqube);
 
-//Update API via ID
+//Update Sonarqube via ID
 router.patch('/Sonarqube/:id', updateSonarqube);
 
 export default router;

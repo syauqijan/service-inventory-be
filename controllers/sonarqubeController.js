@@ -24,7 +24,6 @@ export const createSonarqube = async (req, res) => {
     }
 }
 
-
 export const getSonarqubeById = async(req, res) =>{
     try {
         const response = await SonarqubeModel.findOne({

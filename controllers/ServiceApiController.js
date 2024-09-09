@@ -6,8 +6,23 @@ import { Op } from "sequelize";
 
 // CREATING NEW SERVICE API 
 export const createService = async(req, res) =>{
-    const {name, gitlabUrl, description, yamlSpec, serviceApiDetailId, sonarCubeId, unitTestingId, versionService} = req.body;
+    const {name, gitlabUrl, description, yamlSpec, serviceApiDetailId, sonarQubeId, unitTestingId, versionService, status, ownerId, createdBy} = req.body;
     try {
+        const existingService = await ServiceApiModel.findOne({
+            where: {
+                [Op.or]: [
+                    { name }
+                ]
+            }
+        });
+
+        if (existingService) {
+            let errors = {};
+            if (existingService.name === name) errors.service_name = 'Service name must not be duplicated';
+
+            return res.status(400).json({ errors });
+        }
+
         // Buat entitas ServiceApi di database
         const newServiceApi = await ServiceApiModel.create({
             name: name,
@@ -15,9 +30,12 @@ export const createService = async(req, res) =>{
             description: description,
             yamlSpec: yamlSpec,
             serviceApiDetailId: serviceApiDetailId,
-            sonarCubeId: sonarCubeId,
+            sonarQubeId: sonarQubeId,
             unitTestingId: unitTestingId,
-            versionService: versionService
+            versionService: versionService,
+            status: status,
+            ownerId: ownerId,
+            createdBy: createdBy
         });
 
         // Kembalikan ID dari entitas yang baru saja dibuat
@@ -108,6 +126,12 @@ export const getServiceById = async (req, res) => {
                 {
                     model: User,
                     attributes: ['id', 'name']
+                },
+                {
+                    model: User,
+                    as: 'creator',  // Alias untuk createdBy
+                    attributes: ['name'],
+                    required: false  // Jika createdBy mungkin null
                 }
             ]
         });
@@ -126,13 +150,59 @@ export const getServiceById = async (req, res) => {
 //Update API Via ID
 export const updateService = async(req, res) =>{
     try {
+        const { id } = req.params;
+        const { name } = req.body;
+        const existingService = await ServiceApiModel.findOne({
+            where: {
+                [Op.or]: [
+                    { name }
+                ],
+                id: { [Op.ne]: id }  
+            }
+        });
+
+        if (existingService) {
+            let errors = {};
+            if (existingService.name === name){
+                errors.name = 'Service name must not be duplicated';
+            }
+
+            return res.status(400).json({ errors });
+        }
+        req.body.updatedAt = new Date();
         await ServiceApiModel.update(req.body,{
             where:{
                 id: req.params.id
             }
         });
-        res.status(200).json({msg: "Sonar Qube Updated"});
+        res.status(200).json({msg: "Service API Updated"});
     } catch (error) {
         console.log(error.message);
     }
 }
+
+
+export const getServiceAPIAll = async (req, res) => {
+    try {
+        const { count, rows: serviceapi } = await ServiceApiModel.findAndCountAll({
+            include: 
+            [
+                {
+                    model: Sonarqube,
+                    attributes: ['id', 'qualityGateStatus', 'bugs', 
+                        'vulnerabilities', 'codesmell', 'coverage', 'duplication']
+                },
+                {
+                    model: UnitTesting,
+                    attributes: ['id', 'testCasePassed', 'testCaseFailed', 'coverageStatement', 
+                    'coverageBranch', 'coverageFunction', 'coverageLines']
+                },
+            ],
+        });
+    
+        res.status(200).json({ serviceapi, total: count });
+        } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: "Server Error" });
+        }
+    };

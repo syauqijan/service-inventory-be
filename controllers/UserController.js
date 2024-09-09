@@ -5,51 +5,54 @@ import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 
 export const getUsers = async (req, res) => {
-  try {
-    let { search, page = 1, limit = 10 } = req.query;
-
-    // Pastikan 'page' dan 'limit' adalah angka valid
-    page = parseInt(page);
-    limit = parseInt(limit);
-
-    if (isNaN(page) || page < 1) page = 1;
-    if (isNaN(limit) || limit < 1) limit = 10;
-
-    const offset = (page - 1) * limit;
-
-    const whereCondition = search
-      ? {
-          [Op.or]: [
-            { name: { [Op.like]: `%${search}%` } },
-            { email: { [Op.like]: `%${search}%` } },
-            { "$role.name$": { [Op.like]: `%${search}%` } },
-          ],
-        }
-      : {};
-
-    const { count, rows: users } = await User.findAndCountAll({
-      where: whereCondition,
-      include: [
-        {
-          model: Role,
-          as: "role",
-          attributes: ["name"],
-        },
-      ],
-      limit,
-      offset,
-    });
-
-    // Logging untuk memeriksa hasil query
-    console.log('Users found:', users.length);
-    console.log('Total count:', count);
-
-    res.status(200).json({ users, total: count });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
+    try {
+      let { search, page = 1, limit = 10, status = 'enable' } = req.query;
+  
+      // Pastikan 'page' dan 'limit' adalah angka valid
+      page = parseInt(page);
+      limit = parseInt(limit);
+  
+      if (isNaN(page) || page < 1) page = 1;
+      if (isNaN(limit) || limit < 1) limit = 10;
+  
+      const offset = (page - 1) * limit;
+  
+      const whereCondition = {
+        status,
+      };
+  
+      if (search) {
+        whereCondition[Op.or] = [
+          { name: { [Op.like]: `%${search}%` } },
+          { email: { [Op.like]: `%${search}%` } },
+          { "$role.name$": { [Op.like]: `%${search}%` } },
+        ];
+      }
+  
+      const { count, rows: users } = await User.findAndCountAll({
+        where: whereCondition,
+        include: [
+          {
+            model: Role,
+            as: "role",
+            attributes: ["name"],
+          },
+        ],
+        limit,
+        offset,
+      });
+  
+      // Logging untuk memeriksa hasil query
+      console.log('Users found:', users.length);
+      console.log('Total count:', count);
+  
+      res.status(200).json({ users, total: count });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: "Server Error" });
+    }
+  };
+  
 
 export const getUserById = async(req, res) =>{
     try {
@@ -87,7 +90,10 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({
-            where: { email }
+            where: { 
+                email,
+                status: 'enable' 
+            }
         });
 
         if (!user) {
@@ -126,9 +132,9 @@ export const login = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { name, email, password, roleId } = req.body;
+        const { name, email, password, roleId, status } = req.body;
 
-        const updateData = { name, email, roleId };
+        const updateData = { name, email, roleId, status };
 
         if (password) {
             const salt = await bcrypt.genSalt();

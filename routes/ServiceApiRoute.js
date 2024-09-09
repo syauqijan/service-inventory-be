@@ -4,7 +4,8 @@ import {
     getService,
     deleteService,
     getServiceById,
-    updateService
+    updateService,
+    getServiceAPIAll
 } from "../controllers/ServiceApiController.js";
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.post('/servicesapi', createService);
 
 router.get('/servicesapi', getService);
+
+router.get('/servicesapiAll', getServiceAPIAll);
 
 router.get('/servicesapi/:id', getServiceById);
 

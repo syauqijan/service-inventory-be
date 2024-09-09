@@ -59,7 +59,7 @@ DELETE http://localhost:8000/services/4
 GET http://localhost:8000/services
 
 ###
-GET http://localhost:8000/services/2
+GET http://localhost:8000/services/6
 
 
 ###
@@ -98,8 +98,12 @@ http://localhost:8000/unitTesting/1
 
 // Testing Search Service API via id
 ###
-http://localhost:8000/servicesapi/103
+http://localhost:8000/unitTesting
 
+
+// Testing Search Service API ALL
+###
+http://localhost:8000/servicesapiAll
 
 ###
 DELETE http://localhost:8000/servicesapi/104
@@ -110,6 +114,9 @@ DELETE http://localhost:8000/api/99
 ###
 GET http://localhost:8000/users?page=2&limit=5
 
+
+###
+GET http://localhost:8000/unitTesting
 
 ###
 POST http://localhost:8000/Sonarqube

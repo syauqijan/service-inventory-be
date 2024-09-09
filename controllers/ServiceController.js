@@ -1,6 +1,8 @@
 import ServiceWeb from "../models/ServiceWebModel.js";
 import User from "../models/UserModel.js";
 import { Op } from "sequelize";
+import { Sequelize } from 'sequelize';
+
 
 export const getService = async (req, res) => {
     const { search, page = 1, limit = 10 } = req.query;
@@ -36,7 +38,7 @@ export const getService = async (req, res) => {
 
 export const createService = async (req, res) => {
     try {
-        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService } = req.body;
+        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService, status, createdBy } = req.body;
 
         const existingService = await ServiceWeb.findOne({
             where: {
@@ -54,7 +56,7 @@ export const createService = async (req, res) => {
         }
 
         const newService = await ServiceWeb.create({
-            name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService
+            name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService, status, createdBy
         });
 
         res.status(201).json(newService);
@@ -70,10 +72,19 @@ export const getServiceById = async (req, res) => {
             where: {
                 id: req.params.id
             },
-            include: [{
-                model: User,
-                attributes: ['name']
-            }]
+            include: [
+                {
+                    model: User,
+                    as: 'user',  // Alias untuk userId
+                    attributes: ['name']
+                },
+                {
+                    model: User,
+                    as: 'creator',  // Alias untuk createdBy
+                    attributes: ['name'],
+                    required: false  // Jika createdBy mungkin null
+                }
+            ]
         });
         
         if (!response) {
@@ -86,6 +97,7 @@ export const getServiceById = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 export const deleteService = async (req, res) => {
     try {
@@ -111,7 +123,7 @@ export const deleteService = async (req, res) => {
 export const updateService = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService } = req.body;
+        const { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService, status } = req.body;
 
         const existingService = await ServiceWeb.findOne({
             where: {
@@ -130,7 +142,7 @@ export const updateService = async (req, res) => {
         }
 
         await ServiceWeb.update(
-            { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService },
+            { name, gitlabUrl, description, preprodUrl, preprodUrlStatus, prodUrl, prodUrlStatus, userId, versionService, status },
             { where: { id } }
         );
 

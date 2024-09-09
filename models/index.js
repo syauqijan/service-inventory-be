@@ -21,8 +21,8 @@ ServiceWeb.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
 User.hasMany(ServiceApi, { foreignKey: 'ownerId', onDelete: 'CASCADE' });
 ServiceApi.belongsTo(User, { foreignKey: 'ownerId', onDelete: 'CASCADE' });
 
-ServiceApi.belongsTo(SonarQube, { foreignKey: 'sonarCubeId', onDelete: 'CASCADE' });
-SonarQube.hasMany(ServiceApi, { foreignKey: 'sonarCubeId', onDelete: 'CASCADE' });
+ServiceApi.belongsTo(SonarQube, { foreignKey: 'sonarQubeId', onDelete: 'CASCADE' });
+SonarQube.hasMany(ServiceApi, { foreignKey: 'sonarQubeId', onDelete: 'CASCADE' });
 
 ServiceApi.belongsTo(UnitTesting, { foreignKey: 'unitTestingId', onDelete: 'CASCADE' });
 UnitTesting.hasMany(ServiceApi, { foreignKey: 'unitTestingId', onDelete: 'CASCADE' });
